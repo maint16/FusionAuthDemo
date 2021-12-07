@@ -2,13 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>534ca305-2af9-413f-af47-4b24d6b8b4d5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.7.1" />
     <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.7.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
 </Project>

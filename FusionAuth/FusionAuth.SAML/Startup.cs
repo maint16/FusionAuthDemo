@@ -1,19 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace FusionAuth.SAML
 {
@@ -29,9 +23,7 @@ namespace FusionAuth.SAML
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices( IServiceCollection services )
         {
-
-            services.AddControllers( );
-
+            services.AddRazorPages( );
             services.Configure<Saml2Configuration>( Configuration.GetSection( "Saml2" ) );
 
             services.Configure<Saml2Configuration>( saml2Configuration =>
@@ -52,12 +44,6 @@ namespace FusionAuth.SAML
                 } );
 
             services.AddSaml2( );
-
-            services.AddSwaggerGen( c =>
-             {
-                 c.SwaggerDoc( "v1", new OpenApiInfo { Title = "FusionAuth.SAML", Version = "v1" } );
-             } );
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,19 +52,28 @@ namespace FusionAuth.SAML
             if ( env.IsDevelopment( ) )
             {
                 app.UseDeveloperExceptionPage( );
-                app.UseSwagger( );
-                app.UseSwaggerUI( c => c.SwaggerEndpoint( "/swagger/v1/swagger.json", "FusionAuth.SAML v1" ) );
+            }
+            else
+            {
+                app.UseExceptionHandler( "/Error" );
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts( );
             }
 
             app.UseHttpsRedirection( );
+            app.UseStaticFiles( );
 
             app.UseRouting( );
+            app.UseSaml2( );
 
             app.UseAuthorization( );
 
             app.UseEndpoints( endpoints =>
              {
-                 endpoints.MapControllers( );
+                 endpoints.MapRazorPages( );
+                 endpoints.MapControllerRoute(
+                     name: "default",
+                     pattern: "{controller=Home}/{action=Index}/{id?}" );
              } );
         }
     }

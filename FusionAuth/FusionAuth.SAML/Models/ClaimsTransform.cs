@@ -5,7 +5,7 @@ using ITfoxtec.Identity.Saml2.Claims;
 
 namespace FusionAuth.SAML.Models
 {
-    public class ClaimsTransform
+    public static class ClaimsTransform
     {
         public static ClaimsPrincipal Transform( ClaimsPrincipal incomingPrincipal )
         {
@@ -29,9 +29,9 @@ namespace FusionAuth.SAML.Models
             //claims.Add(new Claim(ClaimTypes.NameIdentifier, GetClaimValue(incomingPrincipal, ClaimTypes.NameIdentifier)));
 
             return new ClaimsPrincipal( new ClaimsIdentity( claims, incomingPrincipal.Identity.AuthenticationType, ClaimTypes.NameIdentifier, ClaimTypes.Role )
-                {
-                    BootstrapContext = ( ( ClaimsIdentity ) incomingPrincipal.Identity ).BootstrapContext
-                } );
+            {
+                BootstrapContext = ( ( ClaimsIdentity ) incomingPrincipal.Identity ).BootstrapContext
+            } );
         }
 
         private static IEnumerable<Claim> GetSaml2LogoutClaims( ClaimsPrincipal principal )

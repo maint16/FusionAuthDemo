@@ -11,9 +11,8 @@ using Microsoft.Extensions.Options;
 
 namespace FusionAuth.SAML.Controllers
 {
-    [ApiController]
     [AllowAnonymous]
-    [Route( "[controller]" )]
+    [Route( "Authentication" )]
     public class AuthenticationController : Controller
     {
         const string relayStateReturnUrl = "ReturnUrl";
@@ -24,15 +23,16 @@ namespace FusionAuth.SAML.Controllers
             config = configAccessor.Value;
         }
 
-        [HttpGet( "Login" )]
+        [Route( "Login" )]
         public IActionResult Login( string returnUrl = null )
         {
             var binding = new Saml2RedirectBinding( );
             binding.SetRelayStateQuery( new Dictionary<string, string> { { relayStateReturnUrl, returnUrl ?? Url.Content( "~/" ) } } );
-            return binding.Bind( new Saml2AuthnRequest( config ) ).ToActionResult(  );
+
+            return binding.Bind( new Saml2AuthnRequest( config ) ).ToActionResult( );
         }
 
-        [HttpGet( "AssertionConsumerService" )]
+        [Route( "AssertionConsumerService" )]
         public async Task<IActionResult> AssertionConsumerService( )
         {
             var binding = new Saml2PostBinding( );
