@@ -2,35 +2,42 @@
 
 To demonstrate how back-end api can integrate with SAML in Fusion auth
 ## Table of Contents
+* [Prerequisites](#prerequisites)
 * [Setup FusionAuth](#setup-fusion-auth)
 * [Setup project](#setup-project)
 * [Try it out](#usage)
 
+## Prerequisites  
+* Install .NET 5
+* Visual studio
+* Basic concept of SAML
 
 ## Setup FusionAuth
 In this guide we will make all the steps from beginning (FusionAuth UI needs to be available ). If you already have your Tenant, Application, Master Key, User configured, you can skip these steps.
 - Add a Tenant  
-  Our Tenant contains the basic information like this:  
-   !(/Images/add_tenant.png)
+  Our Tenant contains the basic information like this:    
+   ![Add tenant](https://i.ibb.co/sQN98Vv/add-tenant.png)   
 - Add a Master key   
-  !(/Images/add_key_master.png)
+  ![Add key master](https://i.ibb.co/rQ0zMH4/add-key-master.png)
 - Add an Application and configure SAML using the Master Key you added above.
-  !(/Images/add_application.png)  
+  ![Add application](https://i.ibb.co/WvVKp4X/add-application.png)  
   And in SAML tab:  
-  !(/Images/saml_config.png)  
-  !(/images/saml_config_logout.png)
+  ![saml config](https://i.ibb.co/34fjJ4T/saml-config.png)       
+
+  ![saml config](https://i.ibb.co/nDRgctN/saml-config-logout.png)
 - Add an User belong to the Tenant and have the Application in Registrations.  
-  !(/Images/add_user.png)
+  ![Add user](https://i.ibb.co/WkLTsXh/add-user.png)
   After ```save``` we need to edit application and add the application in registrations list:  
-  !(/Images/user_add_app_registrations.png)
+  ![User registrations](https://i.ibb.co/TTb6rQ4/user-add-app-registrations.png)
 ## Setup project
-  Add the required packages by running the following commands:  
-  
+Create a webapp project called ```FusionAuth.SAML```    
+Add the required packages in ```NuGet Package Manager```:
+
  ```
-     dotnet add package ITfoxtec.Identity.Saml2 --version 4.0.8  
-     dotnet add package ITfoxtec.Identity.Saml2.MvcCore --version 4.0.8
+     ITfoxtec.Identity.Saml2 --version 4.0.8  
+     ITfoxtec.Identity.Saml2.MvcCore --version 4.0.8
 ```
-In ```Startup.cs``` file, start by adding SAML config in ```ConfigureServices()```:  
+In ```Startup.cs``` file, start by adding SAML config in ```ConfigureServices()```:
 ```
 public void ConfigureServices(IServiceCollection services)
 {
@@ -56,11 +63,11 @@ public void ConfigureServices(IServiceCollection services)
     services.AddSaml2();  
 }
 ```  
-And in ```Configure``` add the following after ```app.UseRoting```: 
+And in ```Configure``` add the following after ```app.UseRoting```:
 ```
 app.UseSaml2();
 ```  
-Lastly, add the configuation settings to ```appsettings.json```:  
+Lastly, add the configuation settings to ```appsettings.json```:
 ```
 "Saml2": {
         "IdPMetadata": "http://localhost:9011/samlv2/metadata/d3b296eb-93fb-4307-b55a-6eec7c0ea96a",
@@ -70,12 +77,16 @@ Lastly, add the configuation settings to ```appsettings.json```:
         "RevocationMode": "NoCheck"
     }
 ```
+The ```IdPMetadta``` value taken from Application ```View``` mode:  
+![Metadata](https://i.ibb.co/qYXhKdN/view-application.png)
 The application will now use SAML for authentication.
 ## Try it out
-- Run the project Home page then click on ```Login``` button:  
-!(/Images/home_page.png)  
+- Run the project the Home page will be displayed then click on ```Login``` button:  
+![Home page](https://i.ibb.co/tCYYr3H/home-page.png)  
 - Click ```Login``` and login with ```username``` and ```password``` we created:  
-  !(/Images/login.png)  
+  ![Login](https://i.ibb.co/BKXxs1m/login.png)  
 - Once redirected back to your application, you will see that your nave shows that you are logged in.  
-  !(/Images/login_success.png) 
-
+  ![Login success](https://i.ibb.co/hRPj674/login-success.png)  
+ We open claims page to see user Claims:  
+  ![Claims](https://i.ibb.co/Qp9F3gd/claims.png)  
+ 
