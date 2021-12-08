@@ -11,18 +11,18 @@ To demonstrate how back-end api can integrate with SAML in Fusion auth
 In this guide we will make all the steps from beginning (FusionAuth UI needs to be available ). If you already have your Tenant, Application, Master Key, User configured, you can skip these steps.
 - Add a Tenant  
   Our Tenant contains the basic information like this:  
-   !(/images/add_tenant.png)
+   !(/Images/add_tenant.png)
 - Add a Master key   
-  !(/images/add_key_master.png)
+  !(/Images/add_key_master.png)
 - Add an Application and configure SAML using the Master Key you added above.
-  !(/images/add_application.png)  
+  !(/Images/add_application.png)  
   And in SAML tab:  
-  !(/images/saml_config.png)  
+  !(/Images/saml_config.png)  
   !(/images/saml_config_logout.png)
 - Add an User belong to the Tenant and have the Application in Registrations.  
-  !(/images/add_user.png)
+  !(/Images/add_user.png)
   After ```save``` we need to edit application and add the application in registrations list:  
-  !(/images/user_add_app_registrations.png)
+  !(/Images/user_add_app_registrations.png)
 ## Setup project
   Add the required packages by running the following commands:  
   
@@ -73,9 +73,9 @@ Lastly, add the configuation settings to ```appsettings.json```:
 The application will now use SAML for authentication.
 ## Try it out
 - Run the project Home page then click on ```Login``` button:  
-!(/images/home_page.png)  
+!(/Images/home_page.png)  
 - Click ```Login``` and login with ```username``` and ```password``` we created:  
-  !(/images/login.png)  
+  !(/Images/login.png)  
 - Once redirected back to your application, you will see that your nave shows that you are logged in.  
-  !(/images/login_success.png) 
+  !(/Images/login_success.png) 
 
