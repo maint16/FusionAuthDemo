@@ -15,54 +15,72 @@ namespace FusionAuth.SAML.Controllers
     [Route( "Authentication" )]
     public class AuthenticationController : Controller
     {
+        #region Static
+
+        #region - Private
+
         const string relayStateReturnUrl = "ReturnUrl";
+
+        #endregion
+
+        #endregion
+
+        #region Private
+
         private readonly Saml2Configuration config;
+
+        #endregion
+
+        #region Public
 
         public AuthenticationController( IOptions<Saml2Configuration> configAccessor )
         {
-            config = configAccessor.Value;
-        }
-
-        [Route( "Login" )]
-        public IActionResult Login( string returnUrl = null )
-        {
-            var binding = new Saml2RedirectBinding( );
-            binding.SetRelayStateQuery( new Dictionary<string, string> { { relayStateReturnUrl, returnUrl ?? Url.Content( "~/" ) } } );
-
-            return binding.Bind( new Saml2AuthnRequest( config ) ).ToActionResult( );
+            this.config = configAccessor.Value;
         }
 
         [Route( "AssertionConsumerService" )]
         public async Task<IActionResult> AssertionConsumerService( )
         {
             var binding = new Saml2PostBinding( );
-            var saml2AuthnResponse = new Saml2AuthnResponse( config );
+            var saml2AuthnResponse = new Saml2AuthnResponse( this.config );
 
-            binding.ReadSamlResponse( Request.ToGenericHttpRequest( ), saml2AuthnResponse );
+            binding.ReadSamlResponse( this.Request.ToGenericHttpRequest( ), saml2AuthnResponse );
             if ( saml2AuthnResponse.Status != Saml2StatusCodes.Success )
             {
                 throw new AuthenticationException( $"SAML Response status: {saml2AuthnResponse.Status}" );
             }
-            binding.Unbind( Request.ToGenericHttpRequest( ), saml2AuthnResponse );
-            await saml2AuthnResponse.CreateSession( HttpContext, claimsTransform: ( claimsPrincipal ) => ClaimsTransform.Transform( claimsPrincipal ) );
+
+            binding.Unbind( this.Request.ToGenericHttpRequest( ), saml2AuthnResponse );
+            await saml2AuthnResponse.CreateSession( this.HttpContext, claimsTransform: claimsPrincipal => ClaimsTransform.Transform( claimsPrincipal ) );
 
             var relayStateQuery = binding.GetRelayStateQuery( );
-            var returnUrl = relayStateQuery.ContainsKey( relayStateReturnUrl ) ? relayStateQuery[relayStateReturnUrl] : Url.Content( "~/" );
-            return Redirect( returnUrl );
+            var returnUrl = relayStateQuery.ContainsKey( relayStateReturnUrl ) ? relayStateQuery[relayStateReturnUrl] : this.Url.Content( "~/" );
+            return this.Redirect( returnUrl );
+        }
+
+        [Route( "Login" )]
+        public IActionResult Login( string returnUrl = null )
+        {
+            var binding = new Saml2RedirectBinding( );
+            binding.SetRelayStateQuery( new Dictionary<string, string> { { relayStateReturnUrl, returnUrl ?? this.Url.Content( "~/" ) } } );
+
+            return binding.Bind( new Saml2AuthnRequest( this.config ) ).ToActionResult( );
         }
 
         [HttpPost( "Logout" )]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout( )
         {
-            if ( !User.Identity.IsAuthenticated )
+            if ( !this.User.Identity.IsAuthenticated )
             {
-                return Redirect( Url.Content( "~/" ) );
+                return this.Redirect( this.Url.Content( "~/" ) );
             }
 
             var binding = new Saml2PostBinding( );
-            var saml2LogoutRequest = await new Saml2LogoutRequest( config, User ).DeleteSession( HttpContext );
-            return Redirect( "~/" );
+            var saml2LogoutRequest = await new Saml2LogoutRequest( this.config, this.User ).DeleteSession( this.HttpContext );
+            return this.Redirect( "~/" );
         }
+
+        #endregion
     }
 }

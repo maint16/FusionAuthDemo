@@ -7,15 +7,9 @@ namespace FusionAuth.SAML.Models
 {
     public static class ClaimsTransform
     {
-        public static ClaimsPrincipal Transform( ClaimsPrincipal incomingPrincipal )
-        {
-            if ( !incomingPrincipal.Identity.IsAuthenticated )
-            {
-                return incomingPrincipal;
-            }
+        #region Static
 
-            return CreateClaimsPrincipal( incomingPrincipal );
-        }
+        #region - Private
 
         private static ClaimsPrincipal CreateClaimsPrincipal( ClaimsPrincipal incomingPrincipal )
         {
@@ -29,16 +23,9 @@ namespace FusionAuth.SAML.Models
             //claims.Add(new Claim(ClaimTypes.NameIdentifier, GetClaimValue(incomingPrincipal, ClaimTypes.NameIdentifier)));
 
             return new ClaimsPrincipal( new ClaimsIdentity( claims, incomingPrincipal.Identity.AuthenticationType, ClaimTypes.NameIdentifier, ClaimTypes.Role )
-            {
-                BootstrapContext = ( ( ClaimsIdentity ) incomingPrincipal.Identity ).BootstrapContext
-            } );
-        }
-
-        private static IEnumerable<Claim> GetSaml2LogoutClaims( ClaimsPrincipal principal )
-        {
-            yield return GetClaim( principal, Saml2ClaimTypes.NameId );
-            yield return GetClaim( principal, Saml2ClaimTypes.NameIdFormat );
-            yield return GetClaim( principal, Saml2ClaimTypes.SessionIndex );
+                {
+                    BootstrapContext = ( ( ClaimsIdentity ) incomingPrincipal.Identity ).BootstrapContext
+                } );
         }
 
         private static Claim GetClaim( ClaimsPrincipal principal, string claimType )
@@ -51,5 +38,30 @@ namespace FusionAuth.SAML.Models
             var claim = GetClaim( principal, claimType );
             return claim != null ? claim.Value : null;
         }
+
+        private static IEnumerable<Claim> GetSaml2LogoutClaims( ClaimsPrincipal principal )
+        {
+            yield return GetClaim( principal, Saml2ClaimTypes.NameId );
+            yield return GetClaim( principal, Saml2ClaimTypes.NameIdFormat );
+            yield return GetClaim( principal, Saml2ClaimTypes.SessionIndex );
+        }
+
+        #endregion
+
+        #region - Public
+
+        public static ClaimsPrincipal Transform( ClaimsPrincipal incomingPrincipal )
+        {
+            if ( !incomingPrincipal.Identity.IsAuthenticated )
+            {
+                return incomingPrincipal;
+            }
+
+            return CreateClaimsPrincipal( incomingPrincipal );
+        }
+
+        #endregion
+
+        #endregion
     }
 }

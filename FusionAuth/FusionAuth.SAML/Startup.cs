@@ -13,37 +13,22 @@ namespace FusionAuth.SAML
 {
     public class Startup
     {
-        public Startup( IConfiguration configuration )
+        #region Static
+
+        #region - Public
+
+        public static IWebHostEnvironment AppEnvironment { get; private set; }
+
+        #endregion
+
+        #endregion
+
+        #region Public
+
+        public Startup( IConfiguration configuration, IWebHostEnvironment env )
         {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices( IServiceCollection services )
-        {
-            services.AddRazorPages( );
-            services.Configure<Saml2Configuration>( Configuration.GetSection( "Saml2" ) );
-
-            services.Configure<Saml2Configuration>( saml2Configuration =>
-                {
-                    saml2Configuration.AllowedAudienceUris.Add( saml2Configuration.Issuer );
-
-                    var entityDescriptor = new EntityDescriptor( );
-                    entityDescriptor.ReadIdPSsoDescriptorFromUrl( new Uri( Configuration["Saml2:IdPMetadata"] ) );
-                    if ( entityDescriptor.IdPSsoDescriptor != null )
-                    {
-                        saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First( ).Location;
-                        saml2Configuration.SignatureValidationCertificates.AddRange( entityDescriptor.IdPSsoDescriptor.SigningCertificates );
-                    }
-                    else
-                    {
-                        throw new Exception( "IdPSsoDescriptor not loaded from metadata." );
-                    }
-                } );
-
-            services.AddSaml2( );
+            this.Configuration = configuration;
+            AppEnvironment = env;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,12 +54,42 @@ namespace FusionAuth.SAML
             app.UseAuthorization( );
 
             app.UseEndpoints( endpoints =>
-             {
-                 endpoints.MapRazorPages( );
-                 endpoints.MapControllerRoute(
-                     name: "default",
-                     pattern: "{controller=Home}/{action=Index}/{id?}" );
-             } );
+                {
+                    endpoints.MapRazorPages( );
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}" );
+                } );
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices( IServiceCollection services )
+        {
+            services.AddRazorPages( );
+            services.Configure<Saml2Configuration>( this.Configuration.GetSection( "Saml2" ) );
+
+            services.Configure<Saml2Configuration>( saml2Configuration =>
+                {
+                    saml2Configuration.AllowedAudienceUris.Add( saml2Configuration.Issuer );
+
+                    var entityDescriptor = new EntityDescriptor( );
+                    entityDescriptor.ReadIdPSsoDescriptorFromUrl( new Uri( this.Configuration["Saml2:IdPMetadata"] ) );
+                    if ( entityDescriptor.IdPSsoDescriptor != null )
+                    {
+                        saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First( ).Location;
+                        saml2Configuration.SignatureValidationCertificates.AddRange( entityDescriptor.IdPSsoDescriptor.SigningCertificates );
+                    }
+                    else
+                    {
+                        throw new Exception( "IdPSsoDescriptor not loaded from metadata." );
+                    }
+                } );
+
+            services.AddSaml2( );
+        }
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
     }
 }

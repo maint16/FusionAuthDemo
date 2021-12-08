@@ -1,0 +1,12 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeStyle/CodeCleanup/RecentlyUsedProfile/@EntryValue">StyleCop</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=0792E6053B25B540A93DA86320E021BA/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=0792E6053B25B540A93DA86320E021BA/AbsolutePath/@EntryValue">D:\Setup\CodingGuidelines\Settings\ReSharper\ReSharper.Team.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=0792E6053B25B540A93DA86320E021BA/RelativePath/@EntryValue">..\..\..\..\..\Setup\CodingGuidelines\Settings\ReSharper\ReSharper.Team.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=6C746040C0D5CD4C9F43FABFA26DBE45/AbsolutePath/@EntryValue">D:\Setup\CodingGuidelines\Settings\ReSharper\Resharper.CS.Conventions.dotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=6C746040C0D5CD4C9F43FABFA26DBE45/RelativePath/@EntryValue">..\..\..\..\..\Setup\CodingGuidelines\Settings\ReSharper\Resharper.CS.Conventions.dotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=6C746040C0D5CD4C9F43FABFA26DBE45/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File0792E6053B25B540A93DA86320E021BA/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File0792E6053B25B540A93DA86320E021BA/RelativePriority/@EntryValue">2</s:Double>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File6C746040C0D5CD4C9F43FABFA26DBE45/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File6C746040C0D5CD4C9F43FABFA26DBE45/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>

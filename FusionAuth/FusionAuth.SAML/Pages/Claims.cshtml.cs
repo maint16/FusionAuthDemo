@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -12,16 +7,23 @@ namespace FusionAuth.SAML.Pages
     [Authorize]
     public class ClaimsModel : PageModel
     {
+        #region Private
+
         private readonly ILogger<ClaimsModel> _logger;
+
+        #endregion
+
+        #region Public
 
         public ClaimsModel( ILogger<ClaimsModel> logger )
         {
-            _logger = logger;
+            this._logger = logger;
         }
 
         public void OnGet( )
         {
-
         }
+
+        #endregion
     }
 }
