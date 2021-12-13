@@ -34,8 +34,8 @@ Create a webapp project called ```FusionAuth.SAML```
 Add the required packages in ```NuGet Package Manager```:
 
  ```
-     ITfoxtec.Identity.Saml2 --version 4.0.8  
-     ITfoxtec.Identity.Saml2.MvcCore --version 4.0.8
+     ITfoxtec.Identity.Saml2 --version 4.7.1  
+     ITfoxtec.Identity.Saml2.MvcCore --version 4.7.1
 ```
 In ```Startup.cs``` file, start by adding SAML config in ```ConfigureServices()```:
 ```
